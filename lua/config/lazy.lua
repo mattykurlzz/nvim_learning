@@ -38,17 +38,4 @@ require("lazy").setup({
   checker = { enabled = true },
 })
 
-local builtin = require ("telescope.builtin")
-vim.keymap.set('n','<C-p>', builtin.find_files, {})
-vim.keymap.set('n','<C-l>', builtin.live_grep, {})
 
-local config = require("nvim-treesitter.configs")
-config.setup({
-  ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "elixir", "heex", "javascript", "html", "rust", "cpp" },
-  sync_install = false,
-  highlight = { enable = true },
-  indent = { enable = true },  
-})
-
-require("catppuccin").setup()
-vim.cmd.colorscheme "catppuccin-macchiato"
