@@ -26,8 +26,7 @@ return {
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-			local lspconfig = require("lspconfig")
-			require("lspconfig").lua_ls.setup({
+			vim.lsp.config.lua_ls.settings = {
 				capabilities = capabilities,
 				settings = {
 					Lua = {
@@ -49,22 +48,22 @@ return {
 						},
 					},
 				},
-			})
-			require("lspconfig").clangd.setup({
+			}
+			vim.lsp.config.clangd.settings = {
 				capabilities = capabilities,
-			})
-			require("lspconfig").rust_analyzer.setup({
+			}
+			vim.lsp.config.rust_analyzer.settings = {
 				capabilities = capabilities,
-			})
-			require("lspconfig").pyright.setup({
+			}
+			vim.lsp.config.pyright.settings = {
 				capabilities = capabilities,
-			})
-			require("lspconfig").pyproject_fmt.setup({
+			}
+			-- vim.lsp.config.pyproject_fmt.settings = {
+			-- 	capabilities = capabilities,
+			-- }
+			vim.lsp.config.jsonls.settings = {
 				capabilities = capabilities,
-			})
-			require("lspconfig").jsonls.setup({
-				capabilities = capabilities,
-			})
+			}
 			--       local coq = require "coq" -- from coq_nvim (gh) addon
 			--       lspconfig.lua_ls.setup(coq.lsp_ensure_capabilities({}))
 			--       lspconfig.clangd.setup(coq.lsp_ensure_capabilities({}))

@@ -8,15 +8,15 @@ return {
 
 		null_ls.setup({
 			sources = {
-				null_ls.builtins.formatting.stylua,
-
-				null_ls.builtins.formatting.clang_format,
 				require("none-ls.diagnostics.cpplint"),
+				-- require("none-ls.diagnostics.luacheckr),
+				null_ls.builtins.diagnostics.luacheck,
+				-- require("none-ls.diagnostics.rust_analyzer"),
 
-				--				null_ls.builtins.formatting.rust_analyzer,
-				--				null_ls.builtins.diagnostics.rust_analyzer,
-
-				null_ls.builtins.formatting.black,
+				-- require("none-ls.formatting.rust_analyzer"),
+				-- null_ls.builtins.formatting.pyproject_fmt,
+				-- null_ls.builtins.formatting.luaformatter,
+				null_ls.builtins.formatting.clang_format,
 			},
 		})
 	end,
