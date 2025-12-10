@@ -51,6 +51,7 @@ return {
 			}
 			vim.lsp.config.clangd.settings = {
 				capabilities = capabilities,
+                cmd = {"clangd", "--compile-commands-dir=build", "--log=verbose"},
 			}
 			vim.lsp.config.rust_analyzer.settings = {
 				capabilities = capabilities,
