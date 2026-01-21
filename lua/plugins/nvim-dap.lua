@@ -12,12 +12,76 @@ return {
             local dapui = require("dapui")
             local dap_python = require("dap-python")
 
+            local function install_debugpy(python_path)
+                local check_cmd = python_path .. ' -c "import debugpy" 2>&1'
+                local handle = io.popen(check_cmd)
+                local result = handle:read("*a")
+                handle:close()
+
+                -- If debugpy is not found, install it
+                if result:match("ModuleNotFoundError") or result:match("ImportError") then
+                    vim.notify("Installing debugpy for " .. python_path)
+
+                    local install_cmd = python_path .. " -m pip install debugpy"
+                    local success = os.execute(install_cmd)
+
+                    if success then
+                        vim.notify("debugpy installed successfully!")
+                        return true
+                    else
+                        vim.notify("Failed to install debugpy", vim.log.levels.ERROR)
+                        return false
+                    end
+                end
+
+                return true
+            end
+
+            local function find_venv_python()
+                local cwd = vim.fn.getcwd()
+
+                -- Check common venv locations
+                local venv_candidates = {
+                    cwd .. "/venv/bin/python",
+                    cwd .. "/venv/bin/python3",
+                    cwd .. "/.venv/bin/python",
+                    cwd .. "/.venv/bin/python3",
+                    cwd .. "/env/bin/python",
+                    cwd .. "/env/bin/python3",
+                }
+
+                -- Check if any venv exists
+                for _, candidate in ipairs(venv_candidates) do
+                    vim.notify(candidate)
+                    if vim.fn.filereadable(candidate) == 1 then
+                        return candidate
+                    end
+                end
+
+                -- Check for virtual environment via python module
+                local handle = io.popen('python3 -c "import sys; print(sys.executable)" 2>/dev/null')
+                local python_exec = handle:read("*a"):gsub("\n", "")
+                handle:close()
+
+                return python_exec or "python3"
+            end
+
             require("dapui").setup({})
             require("nvim-dap-virtual-text").setup({
                 commented = true, -- Show virtual text alongside comment
             })
 
-            dap_python.setup("~/.venvs/debugpy/bin/python3")
+            local python_path = find_venv_python()
+
+            if install_debugpy(python_path) then
+                dap_python.setup(python_path)
+                vim.notify("DAP ready with: " .. python_path)
+            else
+                vim.notify("Could not setup Python DAP. Install debugpy manually: pip install debugpy",
+                    vim.log.levels.ERROR)
+            end
+
+            dap_python.setup(python_path)
 
             vim.fn.sign_define("DapBreakpoint", {
                 text = "",

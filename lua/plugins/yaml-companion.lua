@@ -43,7 +43,7 @@ return {
         },
     },
     config = function(_, opts)
-        local lspconfig = require("lspconfig")
+        local lspconfig = vim.lsp.config
         local lualine = require("lualine")
         local telescope = require("telescope")
         local yaml_companion = require("yaml-companion")

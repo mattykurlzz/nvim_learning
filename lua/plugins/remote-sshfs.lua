@@ -35,10 +35,10 @@ return {
                 },
             },
             log = {
-                enabled = false,  -- enable logging
+                enabled = true,  -- enable logging
                 truncate = false, -- truncate logs
                 types = {         -- enabled log types
-                    all = false,
+                    all = true,
                     util = false,
                     handler = false,
                     sshfs = false,
