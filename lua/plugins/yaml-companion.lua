@@ -1,4 +1,5 @@
 return {
+    enabled = false,
     "someone-stole-my-name/yaml-companion.nvim",
     dependencies = {
         "neovim/nvim-lspconfig",
@@ -43,20 +44,24 @@ return {
         },
     },
     config = function(_, opts)
-        local lspconfig = vim.lsp.config
+        local lspconfig = require("lspconfig")
         local lualine = require("lualine")
         local telescope = require("telescope")
         local yaml_companion = require("yaml-companion")
 
-        yaml_companion.setup(opts)
-        lspconfig["yamlls"].setup(opts.lspconfig)
+        -- FIXED: setup returns the formatted LSP config table
+        local companion_obj = yaml_companion.setup(opts)
+
+        -- Use the companion's generated config for yamlls
+        lspconfig["yamlls"].setup(companion_obj)
+
         telescope.load_extension("yaml_schema")
 
-        -- get schema for current buffer
+        -- get schema for current buffer for lualine
         local function get_schema()
             local schema = yaml_companion.get_buf_schema(0)
             if schema and schema.result and schema.result[1] and schema.result[1].name ~= "none" then
-                return schema.result[1].name
+                return " " .. schema.result[1].name
             end
             return ""
         end
