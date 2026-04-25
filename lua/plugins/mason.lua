@@ -1,6 +1,7 @@
 return {
     {
         "williamboman/mason.nvim",
+        enabled = not vim.g.vscode,
         build = ":MasonUpdate",
         config = function()
             require("mason").setup()
@@ -9,6 +10,7 @@ return {
 
     {
         "williamboman/mason-lspconfig.nvim",
+        enabled = not vim.g.vscode,
         dependencies = {
             "williamboman/mason.nvim",
             "neovim/nvim-lspconfig",
@@ -29,6 +31,7 @@ return {
 
     {
         "neovim/nvim-lspconfig",
+        enabled = not vim.g.vscode,
         dependencies = {
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",

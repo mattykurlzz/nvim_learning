@@ -1,5 +1,6 @@
 return {
     "nvimtools/none-ls.nvim",
+    enabled = not vim.g.vscode,
     dependencies = {
         "nvim-lua/plenary.nvim",
         "nvimtools/none-ls-extras.nvim",

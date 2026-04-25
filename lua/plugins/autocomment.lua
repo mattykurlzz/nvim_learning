@@ -1,6 +1,7 @@
 return {
     "KarimElghamry/vim-auto-comment",
     event = "BufReadPost",
+    enabled = not vim.g.vscode,
     config = function()
         local status_ok, autocomment = pcall(require, "vim-auto-comment")
         if not status_ok then

@@ -1,5 +1,6 @@
 return {
     "nosduco/remote-sshfs.nvim",
+    enabled = not vim.g.vscode,
     dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
     config = function()
         require('remote-sshfs').setup {

@@ -1,5 +1,6 @@
 return {
-    enabled = false,
+	-- enabled = not vim.g.vscode,
+	enabled = false,
     "someone-stole-my-name/yaml-companion.nvim",
     dependencies = {
         "neovim/nvim-lspconfig",

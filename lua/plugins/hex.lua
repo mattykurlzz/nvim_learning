@@ -1,6 +1,7 @@
 -- In your lazy plugin spec file (e.g., ~/.config/nvim/lua/plugins.lua)
 return {
     "RaafatTurki/hex.nvim",
+    enabled = not vim.g.vscode,
     lazy = false, -- Load immediately, not lazy
     config = function()
         require("hex").setup({
