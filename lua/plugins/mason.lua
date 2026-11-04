@@ -1,7 +1,7 @@
 return {
     {
         "williamboman/mason.nvim",
-        enabled = not vim.g.vscode,
+        enabled = false,
         priority = 1000,
         lazy = false,
         build = ":MasonUpdate",
@@ -25,7 +25,7 @@ return {
             -- 3. SHARED ON_ATTACH
             local on_attach = function(client, bufnr)
                 vim.notify("LSP " .. client.name .. " attached", vim.log.levels.INFO)
-                
+
                 local opts = { buffer = bufnr, remap = false }
                 vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
                 vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
@@ -36,7 +36,7 @@ return {
                 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
                 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
                 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-                
+
                 if client.supports_method("textDocument/formatting") then
                     vim.api.nvim_create_autocmd("BufWritePre", {
                         buffer = bufnr,
@@ -63,29 +63,6 @@ return {
                     ["clangd"] = function()
                         vim.lsp.start({
                             name = "clangd",
-                            cmd = {
-                                "clangd",
-                                "--clang-tidy",
-                                "--clang-tidy-checks=*",
-                                "--compile-commands-dir=" .. vim.fn.getcwd(),
-                                "--background-index",
-                                "--header-insertion=iwyu",
-                                "--completion-style=detailed",
-                                "--function-arg-placeholders",
-                                "--log=verbose",
-                                "--offset-encoding=utf-16",
-                            },
-                            capabilities = capabilities,
-                            on_attach = on_attach,
-                            init_options = {
-                                usePlaceholders = true,
-                                completeUnimported = true,
-                                clangdFileStatus = true,
-                            },
-                            root_dir = vim.fs.dirname(vim.fs.find({
-                                ".clangd", ".clang-tidy", ".clang-format",
-                                "compile_commands.json", "compile_flags.txt", ".git",
-                            }, { upward = true })[1]),
                         })
                     end,
 
@@ -93,21 +70,6 @@ return {
                     ["lua_ls"] = function()
                         vim.lsp.start({
                             name = "lua_ls",
-                            cmd = { "lua-language-server" },
-                            capabilities = capabilities,
-                            on_attach = on_attach,
-                            settings = {
-                                Lua = {
-                                    diagnostics = { globals = { "vim" } },
-                                    workspace = {
-                                        library = vim.api.nvim_get_runtime_file("", true),
-                                    },
-                                    telemetry = { enable = false },
-                                },
-                            },
-                            root_dir = vim.fs.dirname(vim.fs.find({
-                                ".luarc.json", ".luarc.jsonc", ".git",
-                            }, { upward = true })[1]),
                         })
                     end,
 
@@ -115,21 +77,6 @@ return {
                     ["pyright"] = function()
                         vim.lsp.start({
                             name = "pyright",
-                            cmd = { "pyright-langserver", "--stdio" },
-                            capabilities = capabilities,
-                            on_attach = on_attach,
-                            settings = {
-                                python = {
-                                    analysis = {
-                                        autoSearchPaths = true,
-                                        diagnosticMode = "openFilesOnly",
-                                        useLibraryCodeForTypes = true,
-                                    },
-                                },
-                            },
-                            root_dir = vim.fs.dirname(vim.fs.find({
-                                "pyproject.toml", "setup.py", ".git",
-                            }, { upward = true })[1]),
                         })
                     end,
 
@@ -137,18 +84,6 @@ return {
                     ["rust_analyzer"] = function()
                         vim.lsp.start({
                             name = "rust_analyzer",
-                            cmd = { "rust-analyzer" },
-                            capabilities = capabilities,
-                            on_attach = on_attach,
-                            settings = {
-                                ["rust-analyzer"] = {
-                                    checkOnSave = { command = "clippy" },
-                                    cargo = { allFeatures = true },
-                                },
-                            },
-                            root_dir = vim.fs.dirname(vim.fs.find({
-                                "Cargo.toml", ".git",
-                            }, { upward = true })[1]),
                         })
                     end,
 
@@ -156,13 +91,6 @@ return {
                     ["jsonls"] = function()
                         vim.lsp.start({
                             name = "jsonls",
-                            cmd = { "vscode-json-language-server", "--stdio" },
-                            capabilities = capabilities,
-                            on_attach = on_attach,
-                            init_options = { provideFormatter = true },
-                            root_dir = vim.fs.dirname(vim.fs.find({
-                                ".git",
-                            }, { upward = true })[1]),
                         })
                     end,
 
@@ -180,7 +108,7 @@ return {
                                 },
                             },
                         })
-                        
+
                         vim.lsp.start({
                             name = "yamlls",
                             cmd = { "yaml-language-server", "--stdio" },
@@ -197,7 +125,7 @@ return {
                             }, { upward = true })[1]),
                         })
                     end,
-                    
+
                     -- IMPORTANT: Default handler for any other LSP servers
                     -- This prevents errors for servers you might add later
                     function(server_name)
@@ -216,15 +144,15 @@ return {
             -- 5. NONE-LS SETUP (handled separately - NOT an LSP)
             -- local null_ls = require("null-ls")
             -- require("mason-null-ls").setup({
-                -- ensure_installed = { "black", "luacheck", "clang-format" },
-                -- automatic_installation = true,
+            -- ensure_installed = { "black", "luacheck", "clang-format" },
+            -- automatic_installation = true,
             -- })
             -- null_ls.setup({
-                -- sources = {
-                    -- null_ls.builtins.formatting.black,
-                    -- null_ls.builtins.formatting.clang_format,
-                    -- null_ls.builtins.diagnostics.luacheck,
-                -- },
+            -- sources = {
+            -- null_ls.builtins.formatting.black,
+            -- null_ls.builtins.formatting.clang_format,
+            -- null_ls.builtins.diagnostics.luacheck,
+            -- },
             -- })
 
             -- 6. TELESCOPE EXTENSION

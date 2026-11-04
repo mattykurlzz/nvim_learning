@@ -5,7 +5,7 @@ return {
         "nvim-neotest/nvim-nio",
         "rcarriga/nvim-dap-ui",
         "theHamsta/nvim-dap-virtual-text",
-        "williamboman/mason.nvim",
+        -- "williamboman/mason.nvim",
         "jay-babu/mason-nvim-dap.nvim",
         "mfussenegger/nvim-dap-python",
     },
@@ -13,21 +13,21 @@ return {
         local dap = require("dap")
         local dapui = require("dapui")
 
-        require("mason-nvim-dap").setup({
-            ensure_installed = { "python", "codelldb" },
-            automatic_installation = true,
-            handlers = {
-                function(config)
-                    require('mason-nvim-dap').default_setup(config)
-                end,
-            },
-        })
+        -- require("mason-nvim-dap").setup({
+        --     ensure_installed = { "python", "codelldb" },
+        --     automatic_installation = true,
+        --     handlers = {
+        --         function(config)
+        --             require('mason-nvim-dap').default_setup(config)
+        --         end,
+        --     },
+        -- })
 
         dapui.setup()
         require("nvim-dap-virtual-text").setup({ commented = true })
 
-        local debugpy_path = vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python"
-        require("dap-python").setup(debugpy_path)
+        -- local debugpy_path = vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python"
+        -- require("dap-python").setup(debugpy_path)
 
         dap.listeners.before.attach.dapui_config = function() dapui.open() end
         dap.listeners.before.launch.dapui_config = function() dapui.open() end
